@@ -18,6 +18,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
     key={todo.id}
   >
     <label htmlFor="title" className="todo__status-label">
+      {''}
       <input
         id="title"
         data-cy="TodoStatus"

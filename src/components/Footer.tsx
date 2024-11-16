@@ -1,11 +1,12 @@
 import React from 'react';
 import { FilterStatus } from '../types/FilterStatus';
+import { Todo } from '../types/Todo';
 
 interface FooterProps {
   counter: number;
   statusFilter: FilterStatus;
   setStatusFilter: (filter: FilterStatus) => void;
-  filteredTodos: any[];
+  filteredTodos: Todo[];
   clearCompletedTodos: () => void;
 }
 
@@ -61,4 +62,3 @@ export const Footer: React.FC<FooterProps> = ({
     </button>
   </footer>
 );
-

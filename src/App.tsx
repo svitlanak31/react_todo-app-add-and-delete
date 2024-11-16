@@ -12,16 +12,25 @@ import classNames from 'classnames';
 export const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [statusFilter, setStatusFilter] = useState<FilterStatus>(FilterStatus.All);
+  const [statusFilter, setStatusFilter] = useState<FilterStatus>(
+    FilterStatus.All,
+  );
   const [newTodoTitle, setNewTodoTitle] = useState('');
   const [isInputDisabled, setIsInputDisabled] = useState(false);
   const [counter, setCounter] = useState<number>(0);
   const [loadingTodoId, setLoadingTodoId] = useState<number | null>(null);
 
+  const updateCounter = (arrTodo: Todo[]) => {
+    const activeTodosCount = arrTodo.filter(todo => !todo.completed).length;
+
+    setCounter(activeTodosCount);
+  };
+
   useEffect(() => {
     const fetchTodos = async () => {
       try {
         const fetchedTodos = await getTodos();
+
         setTodos(fetchedTodos);
         updateCounter(fetchedTodos);
       } catch {
@@ -35,15 +44,12 @@ export const App: React.FC = () => {
   useEffect(() => {
     if (error) {
       const timer = setTimeout(() => setError(null), 3000);
+
       return () => clearTimeout(timer);
     }
+
     return undefined;
   }, [error]);
-
-  const updateCounter = (arrTodo: Todo[]) => {
-    const activeTodosCount = arrTodo.filter(todo => !todo.completed).length;
-    setCounter(activeTodosCount);
-  };
 
   const deleteTodo = (todoId: number) => {
     setLoadingTodoId(todoId);
@@ -62,6 +68,7 @@ export const App: React.FC = () => {
 
     if (newTodoTitle.trim() === '') {
       setError('Title should not be empty');
+
       return;
     }
 
@@ -175,9 +182,15 @@ export const App: React.FC = () => {
 
       <div
         data-cy="ErrorNotification"
-        className={classNames('notification', 'is-danger', 'is-light', 'has-text-weight-normal', {
-          hidden: !error,
-        })}
+        className={classNames(
+          'notification',
+          'is-danger',
+          'is-light',
+          'has-text-weight-normal',
+          {
+            hidden: !error,
+          },
+        )}
       >
         <button
           data-cy="HideErrorButton"
